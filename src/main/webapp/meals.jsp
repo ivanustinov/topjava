@@ -28,9 +28,12 @@
             <input type="hidden" name="action" value="dateTimeFilter">
             <p><b>From date:</b>
                 <input type="date" name="fromDate" title="From date:"/>
-            </p>
-            <p><b>To date:</b>
+                <b>To date:</b>
                 <input type="date" name="toDate" title="To date:"/>
+                <b>From time:</b>
+                <input type="time" name="fromTime" title="From time:"/>
+                <b>To time:</b>
+                <input type="time" name="toTime" title="To time:"/>
             </p>
             <p>
                 <button type="submit">Filter</button>

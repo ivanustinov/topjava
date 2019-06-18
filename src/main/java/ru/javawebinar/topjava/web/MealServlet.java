@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,12 +70,10 @@ public class MealServlet extends HttpServlet {
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "dateTimeFilter":
-                log.info("getDateTimeFilter");
                 request.setAttribute("meals", mealRestController.getAllWithFilter(getDateTimeFilter(request)));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             default:
-                log.info("getAllWithFilter");
                 request.setAttribute("meals", mealRestController.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
         }
@@ -87,14 +87,12 @@ public class MealServlet extends HttpServlet {
 
     private Map<String, LocalDateTime> getDateTimeFilter(HttpServletRequest request) {
         Map<String, LocalDateTime> localDateTimeMap = new HashMap<>();
-        String fromDate = request.getParameter("fromDate");
-        String fromTime = request.getParameter("fromTime");
-        String toDate = request.getParameter("toDate");
-        String toTime = request.getParameter("toTime");
-        LocalDateTime dateTimeFrom = LocalDateTime.parse(fromDate + "" + fromTime);
-        LocalDateTime dateTimeTo = LocalDateTime.parse(toDate + "" + toTime);
-        log.info("dateTimeFrom{)", dateTimeFrom);
-        log.info("dateTimeTo{)", dateTimeTo);
+        LocalDate fromDate = request.getParameter("fromDate").equals("") ? LocalDate.MIN : LocalDate.parse(request.getParameter("fromDate"));
+        LocalDate toDate = request.getParameter("toDate").equals("") ? LocalDate.MAX : LocalDate.parse(request.getParameter("toDate"));
+        LocalTime fromTime = request.getParameter("fromTime").equals("") ? LocalTime.MIN : LocalTime.parse(request.getParameter("fromTime"));
+        LocalTime toTime = request.getParameter("toTime").equals("") ? LocalTime.MAX : LocalTime.parse(request.getParameter("toTime"));
+        LocalDateTime dateTimeFrom = LocalDateTime.parse(fromDate + "T" + fromTime);
+        LocalDateTime dateTimeTo = LocalDateTime.parse(toDate + "T" + toTime);
         localDateTimeMap.put("from", dateTimeFrom);
         localDateTimeMap.put("to", dateTimeTo);
         return localDateTimeMap;

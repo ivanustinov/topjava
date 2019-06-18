@@ -40,7 +40,6 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
         log.info("save {}", user);
         if (user.isNew()) {
             user.setId(counter.incrementAndGet());
-            System.out.println(user.getId() + " " + user.getName());
             repository.put(user.getId(), user);
             return user;
         }

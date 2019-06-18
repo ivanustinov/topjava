@@ -9,7 +9,6 @@ import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,6 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         if (meal.isNew()) {
             meal.setUserId(userId);
             meal.setId(counter.incrementAndGet());
-            log.info("save {}", meal);
             repository.put(meal.getId(), meal);
             return meal;
         }
@@ -65,8 +63,11 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAllWithFilter(Map<String, LocalDateTime> localDateTimeMap, int userId) {
-        return getAllMealsAuthUser(userId).stream().filter(meal -> DateTimeUtil.isBetween(meal.getDateTime(),
-                localDateTimeMap.get("from"), localDateTimeMap.get("to"))).collect(toList());
+        LocalDateTime from = localDateTimeMap.get("from");
+        LocalDateTime to = localDateTimeMap.get("to");
+        return getAllMealsAuthUser(userId).stream().filter(meal -> DateTimeUtil.isBetween(meal.getDate(),
+                from.toLocalDate(), to.toLocalDate())).filter(meal ->
+                DateTimeUtil.isBetween(meal.getTime(), from.toLocalTime(), to.toLocalTime())).collect(toList());
     }
 
     @Override
