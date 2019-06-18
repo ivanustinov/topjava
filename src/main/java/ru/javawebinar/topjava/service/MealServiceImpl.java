@@ -7,12 +7,12 @@ import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
 
-import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserCaloriesPerDay;
 
 @Service
 public class MealServiceImpl implements MealService {
@@ -45,11 +45,11 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<MealTo> getAll(int userId) {
-        return MealsUtil.getWithExcess(repository.getAllMealsAuthUser(userId), DEFAULT_CALORIES_PER_DAY);
+        return MealsUtil.getWithExcess(repository.getAll(userId), authUserCaloriesPerDay());
     }
 
     @Override
-    public List<MealTo> getAllWithFilter(Map<String, LocalDateTime> localDateTimeMap, int userId) {
-        return MealsUtil.getWithExcess(repository.getAllWithFilter(localDateTimeMap, userId), DEFAULT_CALORIES_PER_DAY);
+    public List<MealTo> getAllWithFilter(LocalDate dateFrom, LocalDate dateTo, LocalTime timeFrom, LocalTime timeTo, int userId) {
+        return MealsUtil.getFilteredWithExcess(repository.getAllWithFilter(dateFrom, dateTo, userId), authUserCaloriesPerDay(), timeFrom, timeTo);
     }
 }

@@ -8,7 +8,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +24,13 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.MEALS.forEach(meal -> save(meal, 1));
+        MealsUtil.MEALS_BY_IVAN.forEach(meal -> save(meal, 1));
+        MealsUtil.MEALS_BY_PETR.forEach(meal -> save(meal, 2));
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
+        log.info("save meal {}", meal);
         if (meal.isNew()) {
             meal.setUserId(userId);
             meal.setId(counter.incrementAndGet());
@@ -36,20 +38,19 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
             return meal;
         }
         // treat case: update, but absent in storage
-        else if (meal.getUserId() != userId) {
-            return null;
-        } else {
+        else {
+            meal.setUserId(userId);
             return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
         }
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        Meal meal = repository.get(id);
-        if (meal != null && meal.getUserId() != userId) {
-            return false;
-        } else
-            return repository.remove(id) != null;
+        log.info("delete mealId {}", id);
+        if (get(id, userId) != null) {
+            repository.remove(id);
+            return true;
+        } else return false;
     }
 
     @Override
@@ -62,18 +63,19 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public List<Meal> getAllWithFilter(Map<String, LocalDateTime> localDateTimeMap, int userId) {
-        LocalDateTime from = localDateTimeMap.get("from");
-        LocalDateTime to = localDateTimeMap.get("to");
-        return getAllMealsAuthUser(userId).stream().filter(meal -> DateTimeUtil.isBetween(meal.getDate(),
-                from.toLocalDate(), to.toLocalDate())).filter(meal ->
-                DateTimeUtil.isBetween(meal.getTime(), from.toLocalTime(), to.toLocalTime())).collect(toList());
+    public List<Meal> getAllWithFilter(LocalDate from, LocalDate to, int userId) {
+        return getAll(userId).stream().
+                filter(meal -> DateTimeUtil.isBetween(meal.getDate(), from, to)).
+                sorted(Comparator.comparing(Meal::getDateTime).reversed()).
+                collect(toList());
     }
 
     @Override
-    public List<Meal> getAllMealsAuthUser(int userId) {
-        return repository.values().stream().filter(meal -> meal.getUserId() == userId).
-                sorted(Comparator.comparing(Meal::getDateTime).reversed()).collect(toList());
+    public List<Meal> getAll(int userId) {
+        return repository.values().stream().
+                filter(meal -> meal.getUserId() == userId).
+                sorted(Comparator.comparing(Meal::getDateTime).reversed()).
+                collect(toList());
     }
 
 }

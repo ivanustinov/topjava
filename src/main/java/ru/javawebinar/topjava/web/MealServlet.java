@@ -32,7 +32,6 @@ public class MealServlet extends HttpServlet {
         super.init(config);
         appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         mealRestController = appCtx.getBean(MealRestController.class);
-
     }
 
     @Override
@@ -70,7 +69,11 @@ public class MealServlet extends HttpServlet {
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "dateTimeFilter":
-                request.setAttribute("meals", mealRestController.getAllWithFilter(getDateTimeFilter(request)));
+                String timeFrom = request.getParameter("timeFrom");
+                String dateFrom = request.getParameter("dateFrom");
+                String timeTo = request.getParameter("timeTo");
+                String dateTo = request.getParameter("dateTo");
+                request.setAttribute("meals", mealRestController.getAllWithFilter(dateFrom, timeFrom, dateTo, timeTo));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             default:
@@ -81,22 +84,9 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void destroy() {
-        super.destroy();
         appCtx.close();
     }
 
-    private Map<String, LocalDateTime> getDateTimeFilter(HttpServletRequest request) {
-        Map<String, LocalDateTime> localDateTimeMap = new HashMap<>();
-        LocalDate fromDate = request.getParameter("fromDate").equals("") ? LocalDate.MIN : LocalDate.parse(request.getParameter("fromDate"));
-        LocalDate toDate = request.getParameter("toDate").equals("") ? LocalDate.MAX : LocalDate.parse(request.getParameter("toDate"));
-        LocalTime fromTime = request.getParameter("fromTime").equals("") ? LocalTime.MIN : LocalTime.parse(request.getParameter("fromTime"));
-        LocalTime toTime = request.getParameter("toTime").equals("") ? LocalTime.MAX : LocalTime.parse(request.getParameter("toTime"));
-        LocalDateTime dateTimeFrom = LocalDateTime.parse(fromDate + "T" + fromTime);
-        LocalDateTime dateTimeTo = LocalDateTime.parse(toDate + "T" + toTime);
-        localDateTimeMap.put("from", dateTimeFrom);
-        localDateTimeMap.put("to", dateTimeTo);
-        return localDateTimeMap;
-    }
 
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));

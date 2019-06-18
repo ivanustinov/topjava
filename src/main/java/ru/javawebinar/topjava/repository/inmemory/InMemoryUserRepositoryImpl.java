@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.util.stream.Collectors.toList;
 import static ru.javawebinar.topjava.model.Role.ROLE_ADMIN;
 import static ru.javawebinar.topjava.model.Role.ROLE_USER;
 
@@ -63,6 +62,10 @@ public class InMemoryUserRepositoryImpl implements UserRepository {
     @Override
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
-        return repository.values().stream().filter(user -> user.getEmail().equals(email)).collect(toList()).get(0);
+        return repository.values().stream().
+                filter(user -> user.getEmail().equals(email)).
+                limit(1).
+                findAny().
+                orElse(null);
     }
 }

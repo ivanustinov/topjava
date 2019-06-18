@@ -5,7 +5,9 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +44,12 @@ public class MealRestController {
         return service.getAll(authUserId());
     }
 
-    public List<MealTo> getAllWithFilter(Map<String, LocalDateTime> dateTimeMap) {
-        return service.getAllWithFilter(dateTimeMap, authUserId());
+    public List<MealTo> getAllWithFilter(String dateFrom, String timeFrom, String dateTo, String timeTo) {
+        LocalDate localDateFrom = dateFrom.equals("") ? LocalDate.MIN : LocalDate.parse(dateFrom);
+        LocalDate localDateTo = dateTo.equals("") ? LocalDate.MAX : LocalDate.parse(dateTo);
+        LocalTime localTimeFrom = timeFrom.equals("") ? LocalTime.MIN : LocalTime.parse(timeFrom);
+        LocalTime localTimeTo = timeTo.equals("") ? LocalTime.MAX : LocalTime.parse(timeTo);
+        return service.getAllWithFilter(localDateFrom, localDateTo, localTimeFrom, localTimeTo, authUserId());
     }
 
 

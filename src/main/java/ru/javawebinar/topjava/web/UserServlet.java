@@ -17,15 +17,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class UserServlet extends HttpServlet {
     private static final Logger log = getLogger(UserServlet.class);
-    private AdminRestController adminRestController;
-    private ConfigurableApplicationContext appCtx;
+    private AdminRestController adminRestController = new AdminRestController();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
-        adminRestController = appCtx.getBean(AdminRestController.class);
-
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,10 +34,5 @@ public class UserServlet extends HttpServlet {
         log.debug("forward to users");
         request.setAttribute("users", adminRestController.getAll());
         request.getRequestDispatcher("/users.jsp").forward(request, response);
-    }
-    @Override
-    public void destroy() {
-        super.destroy();
-        appCtx.close();
     }
 }

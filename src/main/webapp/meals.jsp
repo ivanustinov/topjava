@@ -27,13 +27,13 @@
         <form action="meals">
             <input type="hidden" name="action" value="dateTimeFilter">
             <p><b>From date:</b>
-                <input type="date" name="fromDate" title="From date:"/>
+                <input type="date" name="dateFrom" title="From date:"/>
                 <b>To date:</b>
-                <input type="date" name="toDate" title="To date:"/>
+                <input type="date" name="dateTo" title="To date:"/>
                 <b>From time:</b>
-                <input type="time" name="fromTime" title="From time:"/>
+                <input type="time" name="timeFrom" title="From time:"/>
                 <b>To time:</b>
-                <input type="time" name="toTime" title="To time:"/>
+                <input type="time" name="timeTo" title="To time:"/>
             </p>
             <p>
                 <button type="submit">Filter</button>
