@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealTo;
+import ru.javawebinar.topjava.util.ValidationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class MealRestController {
     }
 
     public Meal create(Meal meal) {
+        ValidationUtil.checkNew(meal);
         return service.create(meal, authUserId());
     }
 
@@ -35,8 +37,8 @@ public class MealRestController {
         return service.get(id, authUserId());
     }
 
-    public void update(Meal meal) {
-        service.update(meal, authUserId());
+    public void update(Meal meal, int id) {
+        service.update(meal, id, authUserId());
     }
 
 

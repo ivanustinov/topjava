@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ public class Meal extends AbstractBaseEntity{
     private final int calories;
     private Integer userId;
 
+@Autowired
     public Meal(LocalDateTime dateTime, String description, int calories) {
         this(null, dateTime, description, calories);
     }
