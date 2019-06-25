@@ -5,7 +5,7 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <bean id="adminRestController" class="ru.javawebinar.topjava.web.user.AdminRestController"/>
+<!--    <bean id="adminRestController" class="ru.javawebinar.topjava.web.user.AdminRestController"/>-->
 
     <context:component-scan base-package="ru.javawebinar.**.service"/>
 
