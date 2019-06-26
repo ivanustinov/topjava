@@ -21,14 +21,12 @@ public class MealTestData {
     public static final int USER_ID = START_SEQ;
     public static final int MEAL_ID = START_SEQ + 2;
     public static final Meal MEAL_BREAKFAST = new Meal(MEAL_ID, LocalDateTime.parse("2015-05-30T10:00"), "Завтрак", 200);
-    public static final Meal MEAL_LUNCH = new Meal(LocalDateTime.parse("2015-05-30T13:30"), "Обед", 600);
-    public static final Meal MEAL_DINNER = new Meal(LocalDateTime.parse("2015-05-30T18:00"), "Ужин", 700);
-
-
+    public static final Meal MEAL_LUNCH = new Meal(MEAL_ID + 1, LocalDateTime.parse("2015-05-30T13:30"), "Обед", 600);
+    public static final Meal MEAL_DINNER = new Meal(MEAL_ID + 2, LocalDateTime.parse("2015-06-30T18:00"), "Ужин", 700);
 
 
     public static void assertMatch(Meal actual, Meal expected) {
-        assertThat(actual).isEqualToIgnoringNullFields(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     public static void assertMatch(Iterable<Meal> actual, Meal... expected) {
@@ -38,6 +36,6 @@ public class MealTestData {
     }
 
     public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("id").isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 }

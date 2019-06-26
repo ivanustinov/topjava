@@ -13,7 +13,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -26,7 +25,6 @@ import static ru.javawebinar.topjava.MealTestData.*;
  * @since 26.06.2019
  */
 @ContextConfiguration({
-        "classpath:spring/spring-jdbc.xml",
         "classpath:spring/spring-db.xml",
         "classpath:spring/spring-web-service.xml"
 })
@@ -59,7 +57,7 @@ public class MealServiceTest {
     @Test
     public void getBetweenDates() {
         List<Meal> betweenDates = service.getBetweenDates(LocalDate.parse("2015-06-29"), LocalDate.parse("2015-06-30"), USER_ID);
-        assertMatch(betweenDates, new ArrayList<>());
+        assertMatch(betweenDates, MEAL_DINNER);
     }
 
 
@@ -81,17 +79,17 @@ public class MealServiceTest {
     public void create() {
         Meal meal = new Meal(LocalDateTime.now(), "Завтрак", 200);
         service.create(meal, USER_ID);
-        assertMatch(service.get(meal.getId(), USER_ID), meal);
+        assertMatch(service.getAll(USER_ID), meal, MEAL_BREAKFAST, MEAL_DINNER, MEAL_LUNCH);
     }
 
     @Test(expected = NotFoundException.class)
     public void getForeignMeal() {
-        service.get(MEAL_ID, 1);
+        service.get(MEAL_ID, 1001);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteForeignMeal() {
-        service.delete(MEAL_ID, 1);
+        service.delete(MEAL_ID, 1001);
     }
 
     @Test(expected = NotFoundException.class)
