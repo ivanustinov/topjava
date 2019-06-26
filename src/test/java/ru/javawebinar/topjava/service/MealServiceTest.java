@@ -84,18 +84,18 @@ public class MealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void getForeignMeal() {
-        service.get(MEAL_ID, 1001);
+        service.get(MEAL_ID, 100001);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteForeignMeal() {
-        service.delete(MEAL_ID, 1001);
+        service.delete(MEAL_ID, 100001);
     }
 
     @Test(expected = NotFoundException.class)
     public void updateForeignMeal() {
         Meal meal = new Meal(MEAL_BREAKFAST);
         meal.setDescription("Updated");
-        service.update(meal, 1);
+        service.update(meal, 100001);
     }
 }

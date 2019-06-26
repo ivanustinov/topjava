@@ -26,7 +26,7 @@ public class MealTestData {
 
 
     public static void assertMatch(Meal actual, Meal expected) {
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualToComparingFieldByField(expected);
     }
 
     public static void assertMatch(Iterable<Meal> actual, Meal... expected) {

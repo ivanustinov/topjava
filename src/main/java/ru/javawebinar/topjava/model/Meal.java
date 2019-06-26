@@ -64,6 +64,11 @@ public class Meal extends AbstractBaseEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
     public String toString() {
         return "Meal{" +
                 "id=" + id +
