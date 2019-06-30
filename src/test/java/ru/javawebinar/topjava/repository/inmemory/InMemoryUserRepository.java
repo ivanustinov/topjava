@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.repository.UserRepository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.UserTestData.ADMIN;
@@ -15,9 +16,6 @@ import static ru.javawebinar.topjava.UserTestData.USER;
 
 @Repository
 public class InMemoryUserRepository extends InMemoryBaseRepository<User> implements UserRepository {
-
-    static final int USER_ID = 1;
-    static final int ADMIN_ID = 2;
 
     public void init() {
         entryMap.clear();
@@ -34,6 +32,7 @@ public class InMemoryUserRepository extends InMemoryBaseRepository<User> impleme
 
     @Override
     public User getByEmail(String email) {
+        Objects.requireNonNull(email, "email must not be null");
         return getCollection().stream()
                 .filter(u -> email.equals(u.getEmail()))
                 .findFirst()

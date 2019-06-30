@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.repository.jdbc;
+package ru.javawebinar.topjava.repository.jpa;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class JdbcMealRepositoryImpl implements MealRepository {
+public class JpaMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
