@@ -9,13 +9,11 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
 
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.MealTestData.MEAL1;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 import static ru.javawebinar.topjava.util.DateTimeUtil.adjustEndDateTime;
@@ -45,16 +43,6 @@ public class JpaMealRepositoryTest {
         assertMatch(repository.getAll(USER_ID), MEAL6, MEAL5, MEAL4, MEAL3, MEAL2);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void deleteNotFound() throws Exception {
-        repository.delete(1, USER_ID);
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void deleteNotOwn() throws Exception {
-        repository.delete(MEAL1_ID, ADMIN_ID);
-    }
-
     @Test
     public void create() throws Exception {
         Meal newMeal = getCreated();
@@ -70,15 +58,6 @@ public class JpaMealRepositoryTest {
         assertMatch(actual, ADMIN_MEAL1);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
-        repository.get(1, USER_ID);
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void getNotOwn() throws Exception {
-        repository.get(MEAL1_ID, ADMIN_ID);
-    }
 
     @Test
     public void update() throws Exception {
@@ -87,10 +66,6 @@ public class JpaMealRepositoryTest {
         assertMatch(repository.get(MEAL1_ID, USER_ID), updated);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void updateNotFound() throws Exception {
-        repository.save(MEAL1, ADMIN_ID);
-    }
 
     @Test
     public void getAll() throws Exception {

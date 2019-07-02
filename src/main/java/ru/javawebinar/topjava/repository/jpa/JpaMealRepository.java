@@ -60,10 +60,12 @@ public class JpaMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-//        Query query = em.createQuery(
-//                "SELECT m FROM Meal m LEFT JOIN FETCH m.user WHERE m.user.id=:userId AND m.dateTime BETWEEN  " +
-//                        "AND  ORDER BY m.dateTime DESC");
-        return null;
+        Query query = em.createQuery(
+                "SELECT m FROM Meal m WHERE m.user.id=:userId AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC");
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        query.setParameter("userId", userId);
+        return query.getResultList();
 
     }
 }
