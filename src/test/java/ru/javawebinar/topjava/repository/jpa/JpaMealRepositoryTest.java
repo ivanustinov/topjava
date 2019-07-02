@@ -8,6 +8,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -36,7 +37,7 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.adjustStartDateTime;
 public class JpaMealRepositoryTest {
 
     @Autowired
-    private JpaMealRepository repository;
+    private MealRepository repository;
 
     @Test
     public void delete() throws Exception {
