@@ -1,7 +1,15 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -24,9 +32,39 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+    private static long startTime;
+
+    @BeforeClass
+    public static void startTime() {
+        startTime = System.currentTimeMillis();
+    }
+
+    @AfterClass
+    public static void endTime() {
+        System.out.println("Time running tests" + (System.currentTimeMillis() - startTime) + " mseconds");
+    }
 
     @Autowired
     private MealService service;
+
+    @Rule
+    public final ExpectedException thrown = ExpectedException.none();
+
+    @Rule
+    public TestWatcher watcher = new TestWatcher() {
+        long startTime;
+
+        @Override
+        protected void starting(Description description) {
+            startTime = System.currentTimeMillis();
+        }
+
+        @Override
+        protected void finished(Description description) {
+            log.info("Time running {} {} mseconds", description, System.currentTimeMillis() - startTime);
+        }
+    };
 
     @Test
     public void delete() throws Exception {
@@ -34,13 +72,15 @@ public class MealServiceTest {
         assertMatch(service.getAll(USER_ID), MEAL6, MEAL5, MEAL4, MEAL3, MEAL2);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void deleteNotFound() throws Exception {
+    @Test
+    public void deleteNotFound() {
+        thrown.expect(NotFoundException.class);
         service.delete(1, USER_ID);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void deleteNotOwn() throws Exception {
+    @Test
+    public void deleteNotOwn() {
+        thrown.expect(NotFoundException.class);
         service.delete(MEAL1_ID, ADMIN_ID);
     }
 
@@ -59,25 +99,28 @@ public class MealServiceTest {
         assertMatch(actual, ADMIN_MEAL1);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
+    @Test
+    public void getNotFound() {
+        thrown.expect(NotFoundException.class);
         service.get(1, USER_ID);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void getNotOwn() throws Exception {
+    @Test
+    public void getNotOwn() {
+        thrown.expect(NotFoundException.class);
         service.get(MEAL1_ID, ADMIN_ID);
     }
 
     @Test
-    public void update() throws Exception {
+    public void update() {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
         assertMatch(service.get(MEAL1_ID, USER_ID), updated);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test
     public void updateNotFound() throws Exception {
+        thrown.expect(NotFoundException.class);
         service.update(MEAL1, ADMIN_ID);
     }
 
