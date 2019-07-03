@@ -10,6 +10,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,44 +30,36 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else if (get(meal.getId(), userId) != null){
-            Meal m = em.merge(meal);
-            return m;
+            return em.merge(meal);
         } else return null;
     }
 
     @Override
     @Transactional
     public boolean delete(int id, int userId) {
-        Query query = em.createQuery("DELETE FROM Meal m WHERE m.user.id=:userId AND m.id=:id");
-        query.setParameter("userId", userId);
-        query.setParameter("id", id);
-        return query.executeUpdate() != 0;
+        Query query = em.createNamedQuery(Meal.DELETE);
+        return query.setParameter("userId", userId).setParameter("id", id).executeUpdate() != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        Query query = em.createQuery("SELECT m FROM Meal m WHERE m.user.id=:userId AND m.id=:id");
-        query.setParameter("userId", userId);
-        query.setParameter("id", id);
-        List<Meal> meals = query.getResultList();
+        TypedQuery<Meal> query = em.createNamedQuery(Meal.GET, Meal.class);
+        List<Meal> meals = query.setParameter("userId", userId).setParameter("id", id).getResultList();
         return DataAccessUtils.singleResult(meals);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        Query query = em.createQuery("SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC");
-        query.setParameter("userId", userId);
-        return query.getResultList();
+        TypedQuery<Meal> query = em.createNamedQuery(Meal.ALL_USER_ID, Meal.class);
+        return query.setParameter("userId", userId).getResultList();
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        Query query = em.createQuery(
-                "SELECT m FROM Meal m WHERE m.user.id=:userId AND m.dateTime BETWEEN :startDate AND :endDate ORDER BY m.dateTime DESC");
+        TypedQuery<Meal> query = em.createNamedQuery(Meal.ALL_BETWEEN, Meal.class);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
         query.setParameter("userId", userId);
         return query.getResultList();
-
     }
 }
