@@ -1,11 +1,10 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.rules.TestWatcher;
+import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -20,6 +19,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -32,18 +34,30 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-    private static long startTime;
-
-    @BeforeClass
-    public static void startTime() {
-        startTime = System.currentTimeMillis();
-    }
+    protected static final Logger log = LoggerFactory.getLogger("MealServiceTest");
+    private static List<String> list = new ArrayList<>();
 
     @AfterClass
-    public static void endTime() {
-        System.out.println("Time running tests" + (System.currentTimeMillis() - startTime) + " mseconds");
+    public static void getTestInfo() {
+        log.info("Test name, time(microseconds)");
+        list.forEach(log::info);
     }
+
+    private static void logInfo(Description description, long nanos) {
+        String testName = description.getMethodName();
+        String info = String.format("%s %d mksec" ,
+                testName, TimeUnit.NANOSECONDS.toMicros(nanos));
+        log.info(info);
+        list.add(info);
+    }
+
+    @Rule
+    public Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            logInfo(description, nanos);
+        }
+    };
 
     @Autowired
     private MealService service;
@@ -51,20 +65,20 @@ public class MealServiceTest {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
 
-    @Rule
-    public TestWatcher watcher = new TestWatcher() {
-        long startTime;
-
-        @Override
-        protected void starting(Description description) {
-            startTime = System.currentTimeMillis();
-        }
-
-        @Override
-        protected void finished(Description description) {
-            log.info("Time running {} {} mseconds", description, System.currentTimeMillis() - startTime);
-        }
-    };
+//    @Rule
+//    public TestWatcher watcher = new TestWatcher() {
+//        long startTime;
+//
+//        @Override
+//        protected void starting(Description description) {
+//            startTime = System.currentTimeMillis();
+//        }
+//
+//        @Override
+//        protected void finished(Description description) {
+//            log.info("Time running {} {} mseconds", description, System.currentTimeMillis() - startTime);
+//        }
+//    };
 
     @Test
     public void delete() throws Exception {
