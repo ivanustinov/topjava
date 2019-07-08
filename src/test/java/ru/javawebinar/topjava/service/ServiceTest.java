@@ -32,7 +32,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class ServiceTest {
+public abstract class ServiceTest {
 
     private static final Logger log = getLogger("result");
 
@@ -60,6 +60,22 @@ public class ServiceTest {
             log.info(result + " ms\n");
         }
     };
+
+    abstract void get() throws Exception;
+
+    abstract void delete() throws Exception;
+
+    abstract void deleteNotFound() throws Exception;
+
+    abstract void getNotFound() throws Exception;
+
+    abstract void update() throws Exception;
+
+    abstract void getAll() throws Exception;
+
+    abstract void create() throws Exception;
+
+
 
 
 
