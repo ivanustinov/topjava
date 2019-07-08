@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import ru.javawebinar.topjava.ActiveDbProfileResolver;
+import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -15,7 +16,7 @@ import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class MealServiceTest extends ServiceTest {
+public class MealServiceT extends Service {
 
     @Autowired
     public MealService service;
@@ -70,7 +71,7 @@ public class MealServiceTest extends ServiceTest {
     public void update() throws Exception {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
-        assertMatch(service.get(MEAL1_ID, USER_ID), updated);
+        MealTestData.assertMatch(service.get(MEAL1_ID, USER_ID), updated);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class MealServiceTest extends ServiceTest {
 
     @Test
     public void getAll() throws Exception {
-        assertMatch(service.getAll(USER_ID), MEALS);
+        MealTestData.assertMatch(service.getAll(USER_ID), MEALS);
     }
 
     @Test

@@ -7,7 +7,6 @@ import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -30,8 +29,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(value = {"jpa"})
-public abstract class ServiceTest {
+public abstract class Service {
 
     private static final Logger log = getLogger("result");
 
@@ -59,23 +57,4 @@ public abstract class ServiceTest {
             log.info(result + " ms\n");
         }
     };
-
-//    abstract void get() throws Exception;
-//
-//    abstract void delete() throws Exception;
-//
-//    abstract void deleteNotFound() throws Exception;
-//
-//    abstract void getNotFound() throws Exception;
-//
-//    abstract void update() throws Exception;
-//
-//    abstract void getAll() throws Exception;
-//
-//    abstract void create() throws Exception;
-
-
-
-
-
 }

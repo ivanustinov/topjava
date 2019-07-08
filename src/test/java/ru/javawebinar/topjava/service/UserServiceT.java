@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
+import org.springframework.test.context.ActiveProfiles;
+import ru.javawebinar.topjava.ActiveDbProfileResolver;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -16,8 +18,8 @@ import java.util.List;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 
-
-public class UserServiceTest extends ServiceTest{
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
+public class UserServiceT extends Service {
 
     @Autowired
     private UserService service;
