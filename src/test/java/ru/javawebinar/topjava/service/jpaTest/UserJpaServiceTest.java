@@ -1,6 +1,8 @@
-package ru.javawebinar.topjava.service.userTest;
+package ru.javawebinar.topjava.service.jpaTest;
 
 import org.springframework.test.context.ActiveProfiles;
+import ru.javawebinar.topjava.Profiles;
+import ru.javawebinar.topjava.service.UserServiceTest;
 
 /**
  * //TODO add comments.
@@ -9,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
  * @version 1.0
  * @since 08.07.2019
  */
-@ActiveProfiles(value = "jpa")
+@ActiveProfiles(value = Profiles.JPA)
 public class UserJpaServiceTest extends UserServiceTest {
 
 }

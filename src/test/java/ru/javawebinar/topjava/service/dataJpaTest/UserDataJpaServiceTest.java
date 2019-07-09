@@ -1,6 +1,8 @@
-package ru.javawebinar.topjava.service.userTest;
+package ru.javawebinar.topjava.service.dataJpaTest;
 
 import org.springframework.test.context.ActiveProfiles;
+import ru.javawebinar.topjava.Profiles;
+import ru.javawebinar.topjava.service.UserServiceTest;
 
 /**
  * //TODO add comments.
@@ -10,6 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
  * @since 08.07.2019
  */
 
-@ActiveProfiles(value = "datajpa")
+@ActiveProfiles(value = Profiles.DATAJPA)
 public class UserDataJpaServiceTest extends UserServiceTest {
 }

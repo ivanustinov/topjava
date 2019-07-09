@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.service.userTest;
+package ru.javawebinar.topjava.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,8 +7,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
-import ru.javawebinar.topjava.service.Service;
-import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Collections;
@@ -19,7 +17,7 @@ import static ru.javawebinar.topjava.UserTestData.*;
 
 
 
-public abstract class UserServiceTest extends Service {
+public abstract class UserServiceTest extends ServiceTest {
 
     @Autowired
     private UserService service;
