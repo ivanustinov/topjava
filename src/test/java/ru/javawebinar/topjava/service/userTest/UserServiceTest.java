@@ -1,14 +1,14 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.userTest;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
-import ru.javawebinar.topjava.ActiveDbProfileResolver;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.service.Service;
+import ru.javawebinar.topjava.service.UserService;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.util.Collections;
@@ -18,8 +18,8 @@ import java.util.List;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 
-@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class UserServiceT extends Service {
+
+public abstract class UserServiceTest extends Service {
 
     @Autowired
     private UserService service;

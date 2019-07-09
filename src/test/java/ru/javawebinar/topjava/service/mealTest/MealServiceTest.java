@@ -1,11 +1,11 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.mealTest;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import ru.javawebinar.topjava.ActiveDbProfileResolver;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.service.Service;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
@@ -15,8 +15,8 @@ import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class MealServiceT extends Service {
+
+public abstract class MealServiceTest extends Service {
 
     @Autowired
     public MealService service;

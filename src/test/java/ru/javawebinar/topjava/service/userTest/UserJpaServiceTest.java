@@ -1,4 +1,4 @@
-package ru.javawebinar.topjava.service;
+package ru.javawebinar.topjava.service.userTest;
 
 import org.springframework.test.context.ActiveProfiles;
 
@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
  * @version 1.0
  * @since 08.07.2019
  */
-@ActiveProfiles(value = "datajpa")
-public class MealDataJpaServiceTest extends MealServiceT {
+@ActiveProfiles(value = "jpa")
+public class UserJpaServiceTest extends UserServiceTest {
+
 }
