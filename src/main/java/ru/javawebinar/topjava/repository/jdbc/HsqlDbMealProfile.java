@@ -18,15 +18,15 @@ import java.time.LocalDateTime;
  */
 @Repository
 @Profile(value = Profiles.HSQL_DB)
-public class HsqlDbMealProfile extends JdbcMealRepository {
+public class HsqlDbMealProfile extends JdbcMealRepository<Timestamp> {
 
     public HsqlDbMealProfile(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
     @Override
-    public String getDateTime(LocalDateTime dateTime) {
-        return Timestamp.valueOf(dateTime).toString();
+    public Timestamp getDateTime(LocalDateTime dateTime) {
+        return Timestamp.valueOf(dateTime);
     }
 
 }

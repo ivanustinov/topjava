@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-public abstract class JdbcMealRepository implements MealRepository {
+public abstract class JdbcMealRepository<T> implements MealRepository {
 
     protected static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
@@ -59,7 +59,7 @@ public abstract class JdbcMealRepository implements MealRepository {
         return meal;
     }
 
-    public abstract String getDateTime(LocalDateTime dateTime);
+    public abstract T getDateTime(LocalDateTime dateTime);
 
     @Override
     public boolean delete(int id, int userId) {
