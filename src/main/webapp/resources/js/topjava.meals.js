@@ -13,6 +13,10 @@ function clearFilter() {
     $.get(mealAjaxUrl, updateTableByData);
 }
 
+jQuery('#datetimepicker').datetimepicker({
+    format:'Y-m-d H:i'
+});
+
 $(function () {
     makeEditable({
         ajaxUrl: "ajax/profile/meals/",
@@ -28,7 +32,7 @@ $(function () {
                     "data": "dateTime",
                     "render": function (date, type, row) {
                         if (type === "display") {
-                            return date.replace("T", " ");
+                            return date.replace("T", " ").substring(0, 16);
                         }
                         return date;
                     }
